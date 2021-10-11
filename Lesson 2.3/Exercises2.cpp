@@ -1,4 +1,10 @@
-﻿#include <iostream>
+﻿/**
+ * @author Branium Academy
+ * @website braniumacademy.net
+ * @version 2021.10
+ *
+ */
+#include <iostream>
 using namespace std;
 // khai báo nguyên mẫu hàm
 void getInput(float** matrix, int m, int n);
