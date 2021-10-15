@@ -1,3 +1,8 @@
+/**
+ * @author Branium Academy
+ * @version 2021.10
+ * @see <a href="https://braniumacademy.net/">...</a>
+ */
 #include <iostream>
 #include <array>
 using namespace std;
