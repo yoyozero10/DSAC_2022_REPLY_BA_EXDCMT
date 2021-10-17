@@ -15,24 +15,17 @@ public:
 template<class T> class LinkedList {
 private:
 	Node<T>* head; // con trỏ trỏ đến node đầu tiên trong danh sách
-	Node<T>* tail; // con trỏ trỏ tới node cuối của danh sách
 public:
 	LinkedList() {
 		head = nullptr;
-		tail = nullptr;
 	}
-
+	// thêm vào đầu danh sách
 	void add(T data) {
 		Node<T>* p = new Node<T>(data); // tạo node mới p
-		if (isEmpty()) { // kiểm tra xem danh sách rỗng không
-			head = tail = p; // gán giá trị cho head, tail
-		}
-		else { // nếu danh sách không rỗng
-			p->next = head; // cập nhật node next của p
-			head = p; // cập nhật lại node head
-		}
+		p->next = head; // cập nhật node next của p
+		head = p; // cập nhật lại node head
 	}
-
+	// thêm trước node x
 	void addBeforeX(T data, T x) {
 		if (isEmpty()) {
 			add(data);
@@ -64,6 +57,30 @@ public:
 		}
 	}
 
+	// thêm sau node có giá trị x
+	void addAfterX(T data, T x) {
+		if (isEmpty()) {
+			add(data);
+		}
+		else {
+			Node<T>* nodeX = head; // bắt đầu từ node head
+			while (nodeX != nullptr) { // tìm nodeX
+				if (nodeX->data == x) { // nếu tìm thấy
+					break; // kết thúc việc tìm kiếm
+				}
+				nodeX = nodeX->next; // chuyển tới node kế tiếp
+			}
+			if (nodeX != nullptr) { // nếu tìm thấy
+				Node<T>* p = new Node<T>(data); // tạo node mới p
+				p->next = nodeX->next; // cập nhật next của p
+				nodeX->next = p; // cập nhật next của nodeX
+			}
+			else { // nếu không tìm thấy
+				cout << "Khong tim thay node muc tieu\n";
+			}
+		}
+	}
+
 	// thêm node vào sau vị trí k trong danh sách liên kết đơn
 	void addAfterK(T data, int k) {
 		if (isEmpty()) {
@@ -85,8 +102,7 @@ public:
 				nodeX->next = p;
 			}
 			else { // nếu không tìm thấy
-				tail->next = p; // cập nhật next của tail cũ
-				tail = p; // gán lại tail mới
+				cout << "Khong tim thay node muc tieu.\n";
 			}
 		}
 	}
@@ -99,7 +115,7 @@ public:
 	Node<T>* middle() {
 		Node<T>* first = head;
 		Node<T>* second = head;
-		while (second != nullptr && second->next != nullptr && second->next != tail) {
+		while (second != nullptr && second->next != nullptr) {
 			second = second->next->next; // đi 2 bước
 			first = first->next; // đi 1 bước
 		}
@@ -115,7 +131,7 @@ public:
 			Node<T>* p = new Node<T>(data);
 			Node<T>* mid = head;
 			Node<T>* second = head;
-			while (second != nullptr && second->next != nullptr && second->next != tail) {
+			while (second != nullptr && second->next != nullptr) {
 				second = second->next->next; // đi 2 bước
 				mid = mid->next; // đi 1 bước
 			}
@@ -127,11 +143,14 @@ public:
 	void addTail(T data) { // chèn node vào cuối danh sách liên kết
 		Node<T>* p = new Node<T>(data); // tạo node mới p
 		if (!isEmpty()) {
-			tail->next = p; // cập nhật node next của tail
-			tail = p; // cập nhật lại tail
+			Node<T>* q = head;
+			while (q->next != nullptr) {
+				q = q->next;
+			}
+			q->next = p; // cập nhật node next của tail
 		}
 		else {
-			head = tail = p; // gán head, tail cùng bằng p
+			head = p; // gán head, tail cùng bằng p
 		}
 	}
 
@@ -152,20 +171,37 @@ public:
 
 int main() {
 	LinkedList<string> list;
+	// thêm vào đầu:
+	list.add("Binh");
+
+	// thêm vào cuối:
 	list.addTail("Khanh");
 	list.addTail("Hai");
 	list.addTail("Mai");
 	list.addTail("Nga");
 	list.addTail("Oanh");
 	list.addTail("Huong");
+
+	// hiển thị danh sách:
 	cout << "Danh sach goc: ";
 	list.showList();
+
+	// thêm vào trước node có giá trị "Mai"
 	list.addBeforeX("Loan", "Mai");
 	cout << "Sau khi chen truoc node 'Mai': ";
 	list.showList();
+
+	// thêm vào sau node có giá trị "Mai"
+	cout << "Sau khi chen sau node 'Mai': ";
+	list.addAfterX("Trang", "Mai");
+	list.showList();
+
+	// thêm node sau vị trí k
 	list.addAfterK("Hoang", 3);
 	cout << "Sau khi them node sau vi tri 3: ";
 	list.showList();
+
+	// thêm node sau phần tử giữa
 	cout << "Phan tu giua: " << list.middle()->data << endl;
 	list.addAfterMid("Nhung");
 	cout << "Sau khi them node sau node giua: ";
