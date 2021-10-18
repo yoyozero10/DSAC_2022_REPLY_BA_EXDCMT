@@ -36,19 +36,20 @@ public:
 	// hàm cập nhật thông tin của một node
 	bool update(T data, T x) {
 		if (isEmpty()) { // nếu danh sách rỗng
-			return false;
+			return 0;
 		}
 		else { // ngược lại
+			int counter = 0;
 			Node<T>* nodeX = head; // bắt đầu từ node head
 			while (nodeX != nullptr) { // tìm nodeX
 				if (nodeX->data == x) { // nếu tìm thấy
 					nodeX->data = data; // update node
-					return true; // kết thúc việc tìm kiếm
+					counter++; // kết thúc việc tìm kiếm
 				}
 				nodeX = nodeX->next; // chuyển tới node kế tiếp
 			}
+			return counter;
 		}
-		return false; // update failed
 	}
 
 	// tìm node ở giữa danh sách liên kết
@@ -111,17 +112,18 @@ public:
 };
 
 int main() {
-	LinkedList<int> list;
-	list.add(2);
-	list.addTail(3);
-	list.addTail(6);
-	list.addTail(200);
-	list.addTail(68);
-	list.addTail(11);
-	list.addTail(3);
+	LinkedList<string> list;
+	list.add("Mai");
+	list.addTail("Khanh");
+	list.addTail("Hai");
+	list.addTail("Mai");
+	list.addTail("Nga");
+	list.addTail("Oanh");
+	list.addTail("Huong");
+	list.addTail("Mai");
 	cout << "Danh sach goc: ";
 	list.showList();
-	list.update(99, 3);
-	cout << "Sau khi update 1 node 3->99: ";
+	list.update("Hoa", "Mai");
+	cout << "Sau khi update tat ca node \"Mai\"->\"Hoa\": ";
 	list.showList();
 }
