@@ -69,6 +69,7 @@ public:
 
 	Node(Student data) {
 		this->next = nullptr; // khởi tạo mặc định khi tạo node
+		this->prev = nullptr;
 		this->data = data; // gán giá trị của data cho node
 	}
 };
