@@ -34,33 +34,39 @@ public:
 	}
 
 	// hàm xóa node và trả về true
-	bool remove(T data) {
+	int remove(T data) {
 		if (isEmpty()) {
 			cout << "Danh sach rong.\n";
-			return false;
+			return 0;
 		}
+		int count = 0;
 		Node<T>* x = head;
 		Node<T>* prevX = head;
 		while (x != nullptr) {
 			if (x->data == data) {
+				count++;
 				if (x == head) {
-					return removeHead();
+					removeHead();
+					x = head;
+					continue;
 				}
 				else if (x == tail) {
-					return removeTail(prevX);
+					removeTail(prevX);
+					x = tail;
+					continue;
 				}
 				else if (x != nullptr) {
 					prevX->next = x->next;
 					Node<T>* r = x;
 					x = x->next;
 					delete r;
-					return true;
+					continue;
 				}
 			}
 			prevX = x;
 			x = x->next;
 		}
-		return false;
+		return count;
 	}
 
 	bool removeHead() {
@@ -105,17 +111,20 @@ public:
 };
 
 int main() {
-	LinkedList<string> list;
+	LinkedList<long> list;
 	// thêm vào đầu
-	list.add("Thanh");
+	list.add(100);
 
 	// thêm vào cuối
-	list.addTail("Khanh");
-	list.addTail("Hai");
-	list.addTail("Mai");
-	list.addTail("Nga");
-	list.addTail("Oanh");
-	list.addTail("Huong");
+	list.addTail(200);
+	list.addTail(300);
+	list.addTail(200);
+	list.addTail(500);
+	list.addTail(800);
+	list.addTail(900);
+	list.addTail(700);
+	list.addTail(600);
+	list.addTail(200);
 
 	// hiển thị danh sách
 	cout << "Danh sach goc: ";
@@ -123,7 +132,9 @@ int main() {
 
 	// sau khi xóa
 	cout << "Danh sach sau khi xoa: ";
-	string key = "Khanh";
-	list.remove(key);
+	long key = 200;
+	int removedItem = list.remove(key);
 	list.showList();
+	cout << "So phan tu da bi xoa: " << removedItem << endl;
+	return 0;
 }
