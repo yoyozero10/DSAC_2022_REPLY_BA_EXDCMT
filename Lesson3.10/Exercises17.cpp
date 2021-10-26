@@ -33,32 +33,14 @@ template<class T> void printList(list<T> l) {
 	cout << "null\n";
 }
 
-template<class T> int countX(list<T> l, T x) {
-	int occ = 0;
-	for (auto i = l.begin(); i != l.end(); i++)
-	{
-		if (x == *i) {
-			occ++;
-		}
+template<class T> T findMiddle(list<T> l) {
+	auto i = l.begin();
+	auto j = l.begin();
+	while (i != l.end() && (++i) != l.end()) {
+		i++;
+		j++;
 	}
-	return occ;
-}
-
-template<class T> void statistic(list<T> l) {
-	for (auto i = l.begin(); i != l.end(); i++)
-	{
-		bool existed = false;
-		for (auto j = l.begin(); j != i; j++)
-		{
-			if (*i == *j) {
-				existed = true;
-				break;
-			}
-		}
-		if (!existed) {
-			cout << *i << " - " << countX(l, *i) << endl;
-		}
-	}
+	return *j;
 }
 
 int main() {
@@ -66,7 +48,7 @@ int main() {
 	getInput(numbers);
 	cout << "Cac phan tu trong danh sach:\n";
 	printList(numbers);
-	cout << "Danh sach cac phan tu va so lan xuat hien: \n";
-	statistic(numbers);
+	cout << "Gia tri phan tu giua danh sach: ";
+	cout << findMiddle(numbers) << endl;
 	return 0;
 }

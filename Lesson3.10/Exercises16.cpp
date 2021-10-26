@@ -33,31 +33,22 @@ template<class T> void printList(list<T> l) {
 	cout << "null\n";
 }
 
-template<class T> int countX(list<T> l, T x) {
-	int occ = 0;
-	for (auto i = l.begin(); i != l.end(); i++)
-	{
-		if (x == *i) {
-			occ++;
+template<class T> bool addAfterValueK(list<T>& l, T x, T k) {
+	bool found = false;
+	auto i = l.begin();
+	while (i != l.end()) {
+		if (*i == k) {
+			found = true;
+			break;
 		}
+		i++;
 	}
-	return occ;
-}
-
-template<class T> void statistic(list<T> l) {
-	for (auto i = l.begin(); i != l.end(); i++)
-	{
-		bool existed = false;
-		for (auto j = l.begin(); j != i; j++)
-		{
-			if (*i == *j) {
-				existed = true;
-				break;
-			}
-		}
-		if (!existed) {
-			cout << *i << " - " << countX(l, *i) << endl;
-		}
+	if (found) {
+		l.insert(++i, x);
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -66,7 +57,18 @@ int main() {
 	getInput(numbers);
 	cout << "Cac phan tu trong danh sach:\n";
 	printList(numbers);
-	cout << "Danh sach cac phan tu va so lan xuat hien: \n";
-	statistic(numbers);
+	int x;
+	cout << "Nhap x can chen: ";
+	cin >> x;
+	int k;
+	cout << "Nhap gia tri k: ";
+	cin >> k;
+	if (addAfterValueK(numbers, x, k)) {
+		cout << "Danh sach cac phan tu sau khi chen x sau gia tri k: \n";
+		printList(numbers);
+	}
+	else {
+		cout << "Chen that bai.\n";
+	}
 	return 0;
 }

@@ -54,7 +54,7 @@ template<class T> bool removeKth(list<T>& l, int k) {
 int main() {
 	list<int> numbers;
 	getInput(numbers);
-	cout << "Cac phan tu truoc khi sap xep:\n";
+	cout << "Cac phan tu truoc khi xoa:\n";
 	printList(numbers);
 	int k;
 	cout << "Nhap k = ";

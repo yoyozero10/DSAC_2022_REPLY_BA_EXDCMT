@@ -72,7 +72,7 @@ template<class T> T maxK(list<T> l, int k) {
 int main() {
 	list<int> numbers;
 	getInput(numbers);
-	cout << "Cac phan tu truoc khi sap xep:\n";
+	cout << "Cac phan tu trong danh sach:\n";
 	printList(numbers);
 	cout << "Danh sach sau khi loai bo cac phan tu trung lap: \n";
 	int removedItems = removeDuplicate(numbers);

@@ -46,7 +46,7 @@ template<class T> bool removeFront(list<T>& l) {
 int main() {
 	list<int> numbers;
 	getInput(numbers);
-	cout << "Cac phan tu truoc khi sap xep:\n";
+	cout << "Cac phan tu truoc khi xoa:\n";
 	printList(numbers);
 	cout << "Danh sach cac phan tu sau khi xoa dau: \n";
 	removeFront(numbers);

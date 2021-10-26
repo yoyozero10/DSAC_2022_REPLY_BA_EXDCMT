@@ -40,7 +40,7 @@ template<class T> void removeAllX(list<T>& l, T x) {
 int main() {
 	list<int> numbers;
 	getInput(numbers);
-	cout << "Cac phan tu truoc khi sap xep:\n";
+	cout << "Cac phan tu truoc khi xoa:\n";
 	printList(numbers);
 	int x;
 	cout << "Nhap x = ";
