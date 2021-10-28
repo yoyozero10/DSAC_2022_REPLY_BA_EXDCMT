@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <stack>
 using namespace std;
 
 class Student {
@@ -109,69 +110,8 @@ ostream& operator << (ostream& os, const Student& s) {
 	return os;
 }
 
-template<class T> class Stack {
-	T* data;
-	int capacity;
-	int currentSize;
-public:
-	Stack(int cap = 10) {
-		if (cap <= 0) {
-			capacity = 10;
-		}
-		else {
-			capacity = cap;
-		}
-		data = new T[capacity];
-		currentSize = 0;
-	}
-
-	bool isEmpty() {
-		return currentSize == 0;
-	}
-
-	bool isFull() {
-		return currentSize == capacity;
-	}
-
-	void push(T value) {
-		if (isFull()) {
-			cout << "Stack day. Khong the push.\n";
-		}
-		else {
-			data[currentSize++] = value;
-		}
-	}
-
-	T pop() {
-		if (isEmpty()) {
-			throw exception("Stack rong.");
-		}
-		else {
-			currentSize--;
-			return data[currentSize];
-		}
-	}
-
-	T top() {
-		if (isEmpty()) {
-			throw exception("Stack rong.");
-		}
-		else {
-			return data[currentSize - 1];
-		}
-	}
-
-	int size() {
-		return currentSize;
-	}
-
-	~Stack() {
-		delete[] data;
-	}
-};
-
 int main() {
-	Stack<Student> students(100);
+	stack<Student> students;
 	int choice;
 	do {
 		cout << "<================= OPTIONS =================>\n";
@@ -195,7 +135,7 @@ int main() {
 			break;
 		}
 		case 2:
-			if (!students.isEmpty()) {
+			if (!students.empty()) {
 				cout << students.top();
 			}
 			else {
@@ -206,12 +146,12 @@ int main() {
 			cout << "So sv hien co trong stack: " << students.size() << endl;
 			break;
 		case 4: 
-			if (students.isEmpty()) {
+			if (students.empty()) {
 				cout << "Danh sach sv rong.\n";
 			}
 			else {
 				cout << "<== Cac sv trong stack ==>\n";
-				while (!students.isEmpty()) {
+				while (!students.empty()) {
 					cout << students.top();
 					students.pop();
 				}
