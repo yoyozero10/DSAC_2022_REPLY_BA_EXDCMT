@@ -8,49 +8,46 @@
 #include <algorithm>
 using namespace std;
 
-template<class T> class CircularQueue {
-	int headIndex;
-	int tailIndex;
-	int capacity;
-	int currentElement;
-	T* data;
+template<class T> class Node {
 public:
-	CircularQueue(int cap = 10) {
-		if (cap <= 0) {
-			capacity = 10;
-		}
-		else {
-			capacity = cap;
-		}
-		data = new T[capacity];
-		currentElement = 0;
-		headIndex = -1;
-		tailIndex = -1;
+	T data;
+	Node<T>* next;
+
+	Node(T data) {
+		next = nullptr;
+		this->data = data;
+	}
+};
+
+template<class T> class CircularQueue {
+	int currentSize;
+	Node<T>* head;
+	Node<T>* tail;
+public:
+	CircularQueue() {
+		head = tail = nullptr;
+		currentSize = 0;
 	}
 
 	bool isEmpty() {
-		return currentElement == 0;
-	}
-
-	bool isFull() {
-		return currentElement == capacity;
+		return currentSize == 0;
 	}
 
 	int size() {
-		return currentElement;
+		return currentSize;
 	}
 
 	bool push(T e) {
-		if (isFull()) {
-			cout << "Queu day. Them that bai.\n";
-			return false;
-		}
+		Node<T>* p = new Node<T>(e);
 		if (isEmpty()) {
-			headIndex = 0;
+			head = tail = p;
 		}
-		tailIndex = (tailIndex + 1) % capacity;
-		data[tailIndex] = e;
-		currentElement++;
+		else {
+			tail->next = p;
+			p->next = head; 
+			tail = p; // update tail
+		}
+		currentSize++;
 		return true;
 	}
 
@@ -59,15 +56,11 @@ public:
 			return nullptr;
 		}
 		else {
-			int indexToRemove = headIndex;
-			currentElement--;
-			if (headIndex == tailIndex) {
-				headIndex = tailIndex = -1;
-			}
-			else {
-				headIndex = (headIndex + 1) % capacity;
-			}
-			return &data[indexToRemove];
+			Node<T>* r = head;
+			head = head->next;
+			tail->next = head;
+			currentSize--;
+			return &(r->data);
 		}
 	}
 
@@ -76,7 +69,7 @@ public:
 			return nullptr;
 		}
 		else {
-			return &data[headIndex];
+			return &(head->data);
 		}
 	}
 
@@ -85,19 +78,29 @@ public:
 			return nullptr;
 		}
 		else {
-			return &data[tailIndex];
+			return &(tail->data);
 		}
 	}
 
-	~CircularQueue() {
-		delete[] data;
+	void showNodes() {
+		if (isEmpty()) {
+			cout << "Queue rong." << endl;
+		}
+		else {
+			Node<T>* p = head;
+			while (p->next != head) {
+				cout << p->data << "->";
+				p = p->next;
+			}
+			cout << p->data << "->null\n";
+		}
 	}
 };
 
 
 int main()
 {
-	CircularQueue<long> queue(100);
+	CircularQueue<long> queue;
 	int choice;
 	do
 	{
@@ -108,7 +111,6 @@ int main()
 		cout << "4. Lay so phan tu hien co trong hang doi.\n";
 		cout << "5. Hien thi cac phan tu trong hang doi.\n";
 		cout << "6. Kiem tra hang doi co rong khong.\n";
-		cout << "7. Kiem tra hang doi day chua.\n";
 		cout << "0. Thoat chuong trinh.\n";
 		cout << "Lua chon cua ban? ";
 		cin >> choice;
@@ -145,21 +147,10 @@ int main()
 			cout << "So phan tu hien co trong hang doi: " << queue.size() << endl;
 			break;
 		case 5:
-			if (!queue.isEmpty()) {
-				while (!queue.isEmpty()) {
-					cout << *(queue.pop()) << "->";
-				}
-				cout << "null\n";
-			}
-			else {
-				cout << "Hang doi rong.\n";
-			}
+			queue.showNodes();
 			break;
 		case 6:
 			cout << boolalpha << "Hang doi rong? " << queue.isEmpty() << endl;
-			break;
-		case 7:
-			cout << boolalpha << "Hang doi day? " << queue.isFull() << endl;
 			break;
 		default:
 			cout << "Sai chuc nang. Vui long chon lai!\n";
