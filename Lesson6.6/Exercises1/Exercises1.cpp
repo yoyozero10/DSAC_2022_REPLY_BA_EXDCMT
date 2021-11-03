@@ -184,6 +184,10 @@ public:
 		return levelOfNode(root, x, 0);
 	}
 
+	int levelOfNode(T x) {
+		return levelOfNode(root, x, 0);
+	}
+
 	int levelOfNode(Node<T>* r, T x, int level) {
 		if (r == nullptr) {
 			return 0;
