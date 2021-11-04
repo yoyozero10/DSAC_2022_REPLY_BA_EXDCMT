@@ -1,10 +1,4 @@
-﻿/**
- * @author Branium Academy
- * @website braniumacademy.net
- * @version 2021.11
- *
- */
-#include <iostream>
+﻿#include <iostream>
 using namespace std;
 
 // min heap template
@@ -85,7 +79,7 @@ public:
 				return i;
 			}
 		}
-		return false;
+		return -1;
 	}
 	// hàm sàng xuống
 	void siftDown(int index) {
