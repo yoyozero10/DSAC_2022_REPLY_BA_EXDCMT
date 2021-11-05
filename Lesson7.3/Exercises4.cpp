@@ -1,4 +1,10 @@
-﻿#include <iostream>
+﻿/**
+ * @author Branium Academy
+ * @website braniumacademy.net
+ * @version 2021.11
+ *
+ */
+#include <iostream>
 #include <iomanip>
 #include <string>
 using namespace std;

@@ -5,26 +5,27 @@
  *
  */
 #include <iostream>
+#include <exception>
 using namespace std;
 
-// min heap template
-template<class T> class Heap {
+// max heap
+template<class T> class PriorityQueue {
 	T* data;
 	int currentSize;
 	int capacity;
 public:
-	Heap(int cap = 10) {
+	PriorityQueue(int cap = 10) {
 		if (cap <= 0) {
 			capacity = 10;
 		}
 		else {
 			capacity = cap;
 		}
-		data = new T[capacity];
 		currentSize = 0;
+		data = new T[capacity];
 	}
 
-	bool add(T value) {
+	bool push(T value) {
 		if (currentSize < capacity) {
 			data[currentSize] = value;
 			siftUp(currentSize);
@@ -38,7 +39,7 @@ public:
 
 	void siftUp(int index) {
 		int parentIndex = (index - 1) / 2;
-		if (data[index] < data[parentIndex]) { // điều kiện tạo thành min heap
+		if (data[index] > data[parentIndex]) {
 			swap(data[index], data[parentIndex]);
 			siftUp(parentIndex);
 		}
@@ -57,45 +58,38 @@ public:
 		}
 	}
 
-	int size() {
-		return currentSize;
-	}
-
-	bool isEmpty() {
-		return currentSize == 0;
-	}
-	// hàm xóa node khỏi heap
-	bool remove(T value) {
-		int index = findNodeIndex(value);
-		if (index >= 0) {
-			data[index] = data[currentSize - 1];
-			currentSize--;
-			siftDown(index);
-			return true;
+	// phần tử có giá trị lớn nhất trong heap
+	T const front() {
+		if (currentSize >= 0) {
+			return data[0];
 		}
 		else {
-			return false;
+			return T();
 		}
 	}
-	// hàm tìm node
-	int findNodeIndex(T value) {
-		for (int i = 0; i < currentSize; i++)
-		{
-			if (data[i] == value) {
-				return i;
-			}
+
+	T pop() {
+		if (currentSize > 0) {
+			T removed = data[0];
+			data[0] = data[currentSize - 1];
+			currentSize--;
+			siftDown(0);
+			return removed;
 		}
-		return -1;
+		else {
+			throw exception("Hang doi rong.");
+		}
 	}
+
 	// hàm sàng xuống
 	void siftDown(int index) {
 		int largest = index;
 		int left = 2 * index + 1;
 		int right = 2 * index + 2;
-		if (left < currentSize && data[left] < data[largest]) {
+		if (left < currentSize && data[left] > data[largest]) {
 			largest = left;
 		}
-		if (right < currentSize && data[right] < data[largest]) {
+		if (right < currentSize && data[right] > data[largest]) {
 			largest = right;
 		}
 		if (largest != index) {
@@ -103,33 +97,43 @@ public:
 			siftDown(largest);
 		}
 	}
-	// hàm trả về phần tử lớn nhất trong heap
-	T front() {
-		if (currentSize > 0) {
-			return data[0];
+
+	// hàm tìm kiếm giá trị x có tồn tại trong hàng đợi không
+	bool search(T x) {
+		for (int i = 0; i < currentSize; i++)
+		{
+			if (data[i] == x) { // nếu tìm thấy x
+				return true;
+			}
 		}
-		else {
-			return T();
-		}
+		return false; // không tìm thấy x
 	}
-	// hàm hủy
-	~Heap() {
+
+	int size() {
+		return currentSize;
+	}
+
+	bool isEmpty() {
+		return currentSize == 0;
+	}
+
+	~PriorityQueue() {
 		delete[] data;
 	}
 };
 
+// quy ước giá trị nhỏ hơn sẽ có mức ưu tiên cao hơn
 int main() {
-	Heap<int> heap;
+	PriorityQueue<string> heap;
 	int choice;
 	do
 	{
 		cout << "================ OPTIONS ================\n";
 		cout << "1. Them moi mot node.\n";
-		cout << "2. Hien thi cac phan tu trong heap.\n";
-		cout << "3. Tim gia tri x trong heap.\n";
-		cout << "4. Xoa node co gia tri x.\n";
-		cout << "5. Cho biet phan tu nho nhat trong heap.\n";
-		cout << "6. Cho biet kich thuoc cua heap.\n";
+		cout << "2. Lay node dau tien trong queue.\n";
+		cout << "3. Xoa node dau khoi queue.\n";
+		cout << "4. Tim node co gia tri x trong queue.\n";
+		cout << "5. Hien thi cac phan tu trong queue.\n";
 		cout << "0. Thoat chuong trinh.\n";
 		cout << "Lua chon cua ban? ";
 		cin >> choice;
@@ -140,13 +144,45 @@ int main() {
 			break;
 		case 1:
 		{
-			int x;
-			cout << "Nhap x = ";
+			string x;
+			cout << "Nhap ten ai do: ";
 			cin >> x;
-			heap.add(x);
+			heap.push(x);
 			break;
 		}
 		case 2:
+			if (heap.isEmpty()) {
+				cout << "Heap rong.\n";
+			}
+			else {
+				cout << "Gia tri node dau tien trong queue: " << heap.front() << endl;
+			}
+			break;
+		case 3:
+			if (heap.isEmpty()) {
+				cout << "Heap rong.\n";
+			}
+			else {
+				cout << "Node vua xoa khoi queue: " << heap.pop() << endl;
+			}
+			break;
+		case 4:
+			if (heap.isEmpty()) {
+				cout << "Heap rong.\n";
+			}
+			else {
+				string x;
+				cout << "Nhap ten can tim: ";
+				cin >> x;
+				if (heap.search(x)) {
+					cout << "X ton tai trong queue.\n";
+				}
+				else {
+					cout << "X khong ton tai trong queue.\n";
+				}
+			}
+			break;
+		case 5:
 			if (heap.isEmpty()) {
 				cout << "Heap rong.\n";
 			}
@@ -155,52 +191,15 @@ int main() {
 				heap.showElements();
 			}
 			break;
-		case 3:
-			if (heap.isEmpty()) {
-				cout << "Heap rong.\n";
-			}
-			else {
-				int x;
-				cout << "Nhap gia tri can tim x = ";
-				cin >> x;
-				if (heap.findNodeIndex(x) >= 0) {
-					cout << "Gia tri " << x << " ton tai trong heap.\n";
-				}
-				else {
-					cout << x << " khong ton tai trong heap.\n";
-				}
-			}
-			break;
-		case 4:
-			if (heap.isEmpty()) {
-				cout << "Heap rong.\n";
-			}
-			else {
-				int x;
-				cout << "Nhap gia tri can xoa x = ";
-				cin >> x;
-				if (heap.remove(x)) {
-					cout << "Xoa thanh cong.\n";
-				}
-				else {
-					cout << "Xoa that bai.\n";
-				}
-			}
-			break;
-		case 5:
-			cout << "Phan tu nho nhat trong heap: " << heap.front() << endl;
-			break;
-		case 6:
-			cout << "Kich thuoc heap: " << heap.size() << endl;
-			break;
 		default:
 			cout << "Sai lua chon. Vui long thu lai.\n";
 			break;
 		}
 	} while (choice != 0);
+
 	return 0;
 }
-
+// ví dụ một max heap:
 //             90
 //           /    \
 //		   70     80
