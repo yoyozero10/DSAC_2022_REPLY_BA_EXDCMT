@@ -116,11 +116,11 @@ public:
 			return true;
 		}
 		else if (salary == emp.salary) {
-			if (first.compare(emp.first) < 0) {
+			if (first.compare(emp.first) > 0) {
 				return true;
 			}
 			else if (first.compare(emp.first) == 0) {
-				if (last.compare(emp.last) < 0) {
+				if (last.compare(emp.last) > 0) {
 					return true;
 				}
 			}
