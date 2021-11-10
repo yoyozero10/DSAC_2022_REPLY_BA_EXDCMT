@@ -22,28 +22,6 @@ template<class T> void showElements(T* arr, int n) {
 	cout << endl;
 }
 
-// sắp xếp bubble sort tối ưu
-template<class T> void bubbleSortOpt(T* arr, size_t size) {
-	bool isSwapped;
-	size_t i = size - 1;
-	while (i > 0) {
-		isSwapped = false;
-		for (size_t j = 0; j < i; j++)
-		{
-			if (arr[j] < arr[j + 1]) {
-				swap(arr[j], arr[j + 1]);
-				isSwapped = true;
-			}
-		}
-		if (!isSwapped) {
-			break;
-		}
-		else {
-			i--;
-		}
-	}
-}
-
 class Employee {
 	friend ostream& operator << (ostream&, const Employee&);
 private:
@@ -144,6 +122,20 @@ ostream& operator << (ostream& os, const Employee& e) {
 	return os;
 }
 
+// thuật toán sắp xếp chèn
+template<class T> void insertionSort(T* arr, int size) {
+	for (int i = 1; i < size; i++)
+	{
+		T target = arr[i];
+		int j = i - 1;
+		while (j >= 0 && arr[j] < target) {
+			arr[j + 1] = arr[j];
+			j--;
+		}
+		arr[j + 1] = target;
+	}
+}
+
 // hàm đọc dữ liệu đầu vào
 void createEmployee(string str, Employee& e) {
 	stringstream ss(str);
@@ -183,7 +175,7 @@ int main() {
 			createEmployee(str, arr[i]);
 		}
 		ifs.close();
-		bubbleSortOpt(arr, t); // sắp xếp 
+		insertionSort(arr, t); // sắp xếp 
 		showElements(arr, t);
 		delete[] arr; // thu hồi bộ nhớ cấp phát động
 	}

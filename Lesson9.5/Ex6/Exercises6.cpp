@@ -22,28 +22,6 @@ template<class T> void showElements(T* arr, int n) {
 	cout << endl;
 }
 
-// sắp xếp bubble sort tối ưu
-template<class T> void bubbleSortOpt(T* arr, size_t size) {
-	bool isSwapped;
-	size_t i = size - 1;
-	while (i > 0) {
-		isSwapped = false;
-		for (size_t j = 0; j < i; j++)
-		{
-			if (arr[j] < arr[j + 1]) {
-				swap(arr[j], arr[j + 1]);
-				isSwapped = true;
-			}
-		}
-		if (!isSwapped) {
-			break;
-		}
-		else {
-			i--;
-		}
-	}
-}
-
 class Employee {
 	friend ostream& operator << (ostream&, const Employee&);
 private:
@@ -119,7 +97,7 @@ public:
 		return false;
 	}
 
-	bool operator < (const Employee& emp) {
+	bool operator <= (const Employee& emp) {
 		if (salary < emp.salary) {
 			return true;
 		}
@@ -142,6 +120,27 @@ ostream& operator << (ostream& os, const Employee& e) {
 		<< setw(12) << e.mid << setw(10) << e.first
 		<< setw(12) << e.salary << endl;
 	return os;
+}
+
+// thuật toán sắp xếp shell
+template<class T> void shellSort(T* arr, int size) {
+	int interval = 1;
+	while (interval < size / 3) {
+		interval = interval * 3 + 1;
+	}
+	while (interval > 0) {
+		for (int outer = interval; outer < size; outer++)
+		{
+			T target = arr[outer];
+			int inner = outer;
+			while (inner > interval - 1 && arr[inner - interval] <= target) {
+				arr[inner] = arr[inner - interval];
+				inner = inner - interval;
+			}
+			arr[inner] = target;
+		}
+		interval = (interval - 1) / 3;
+	}
 }
 
 // hàm đọc dữ liệu đầu vào
@@ -183,7 +182,7 @@ int main() {
 			createEmployee(str, arr[i]);
 		}
 		ifs.close();
-		bubbleSortOpt(arr, t); // sắp xếp 
+		shellSort(arr, t); // sắp xếp 
 		showElements(arr, t);
 		delete[] arr; // thu hồi bộ nhớ cấp phát động
 	}
