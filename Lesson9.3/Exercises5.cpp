@@ -9,26 +9,18 @@ using namespace std;
 
 template<class T> void showArrayElements(T* arr, size_t size);
 
-// sắp xếp bubble sort tối ưu
-template<class T> void bubbleSortOpt(T* arr, size_t size) {
-	bool isSwapped;
-	size_t i = size - 1;
-	while (i > 0) {
-		isSwapped = false;
-		for (size_t j = 0; j < i; j++)
+template<class T> void selectionSort(T* arr, size_t size) {
+	for (size_t i = 0; i < size - 1; i++)
+	{
+		size_t minIndex = i;
+		for (size_t j = i + 1; j < size; j++)
 		{
-			if (arr[j] > arr[j + 1]) {
-				swap(arr[j], arr[j + 1]);
-				isSwapped = true;
-				showArrayElements(arr, size);
+			if (arr[j] < arr[minIndex]) {
+				minIndex = j;
 			}
 		}
-		if (!isSwapped) {
-			break;
-		}
-		else {
-			i--;
-		}
+		swap(arr[i], arr[minIndex]);
+		showArrayElements(arr, size);
 	}
 }
 
@@ -58,7 +50,7 @@ int main() {
 		int* arr = new int[n];
 		readData(arr, n);
 		cout << "Test " << i << ":\n";
-		bubbleSortOpt(arr, n);
+		selectionSort(arr, n);
 		delete[] arr;
 	}
 	return 0;
