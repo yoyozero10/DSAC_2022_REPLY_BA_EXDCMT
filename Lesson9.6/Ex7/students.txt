@@ -1,0 +1,6 @@
+SV001 Tran Van Nam 3.25
+SV002 Le Van Nam 3.27
+SV003 Hoang Thanh Thuy 3.15
+SV004 Nguyen Thanh Long 3.77
+SV005 Ngo Van Tai 3.25
+SV006 Truong Quynh Anh 3.62
