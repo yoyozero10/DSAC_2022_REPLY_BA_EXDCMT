@@ -14,10 +14,11 @@
 using namespace std;
 
 // hàm hiển thị các phần tử mảng
-template<class T> void showElements(T* arr, int n) {
+template<class T> void showElements(vector<T> arr) {
 	cout << left << setw(12) << "Ma NV" << setw(10) << "Ho"
 		<< setw(12) << "Dem" << setw(10) << "Ten"
 		<< setw(12) << "Luong" << endl;
+	int n = arr.size();
 	for (int i = 0; i < n; i++)
 	{
 		cout << arr[i] << endl;
@@ -116,6 +117,10 @@ public:
 		}
 		return false;
 	}
+
+	bool operator == (const Employee& e) {
+		return id.compare(e.getId()) == 0;
+	}
 };
 
 ostream& operator << (ostream& os, const Employee& e) {
@@ -168,7 +173,7 @@ void createEmployee(string str, Employee& e) {
 }
 
 // thuật toán trộn
-template<class T> void merge(T* arr, int first, int middle, 
+template<class T> void merge(T* arr, int first, int middle,
 	int last, bool (*compare)(const Employee&, const Employee&)) {
 	int size1 = middle - first + 1;
 	int size2 = last - middle;
@@ -201,7 +206,7 @@ template<class T> void merge(T* arr, int first, int middle,
 }
 
 // thuật toán sắp xếp trộn
-template<class T> void mergeSort(T* arr, int first, int last, 
+template<class T> void mergeSort(T* arr, int first, int last,
 	bool (*compare)(const Employee&, const Employee&)) {
 	if (first < last) {
 		int middle = (first + last) / 2;
@@ -212,7 +217,7 @@ template<class T> void mergeSort(T* arr, int first, int last,
 }
 
 // thuật toán tìm kiếm nhị phân
-int findById(Employee* arr, int left, int right, string x) {
+int findById(vector<Employee>& arr, int left, int right, string x) {
 	if (left <= right) {
 		int mid = (left + right) / 2;
 		if (arr[mid].getId().compare(x) == 0) {
@@ -228,7 +233,7 @@ int findById(Employee* arr, int left, int right, string x) {
 	return -1; // không tìm thấy
 }
 
-void findByName(Employee* arr, int n, string x, vector<Employee>& v) {
+void findByName(vector<Employee>& arr, int n, string x, vector<Employee>& v) {
 	transform(x.begin(), x.end(), x.begin(),
 		[](unsigned char c) { return tolower(c); });
 	for (int i = 0; i < n; i++)
@@ -242,7 +247,7 @@ void findByName(Employee* arr, int n, string x, vector<Employee>& v) {
 	}
 }
 
-int leftMostX(Employee* arr, int left, int right, int x) {
+int leftMostX(vector<Employee>& arr, int left, int right, int x) {
 	if (left <= right) {
 		int mid = left + (right - left) / 2;
 		if ((mid == 0 || arr[mid - 1].getSalary() < x) && arr[mid].getSalary() == x) {
@@ -258,7 +263,7 @@ int leftMostX(Employee* arr, int left, int right, int x) {
 	return -1;
 }
 
-int rightMostX(Employee* arr, int n, int left, int right, int x) {
+int rightMostX(vector<Employee>& arr, int n, int left, int right, int x) {
 	if (left <= right) {
 		int mid = left + (right - left) / 2;
 		if ((mid == n - 1 || arr[mid + 1].getSalary() > x) && arr[mid].getSalary() == x) {
@@ -274,7 +279,7 @@ int rightMostX(Employee* arr, int n, int left, int right, int x) {
 	return -1;
 }
 
-void findBySalary(Employee* arr, int n, int x, vector<Employee>& v) {
+void findBySalary(vector<Employee>& arr, int n, int x, vector<Employee>& v) {
 	int counter = 0;
 	// tìm vị trí trái cùng xuất hiện x
 	int startPos = leftMostX(arr, 0, n - 1, x);
@@ -289,7 +294,7 @@ void findBySalary(Employee* arr, int n, int x, vector<Employee>& v) {
 	}
 }
 
-int leftMostXInRange(Employee* arr, int left, int right, int x) {
+int leftMostXInRange(vector<Employee>& arr, int left, int right, int x) {
 	if (left <= right) {
 		int mid = left + (right - left) / 2;
 		if ((mid == 0 || (arr[mid - 1].getSalary() < x)) && arr[mid].getSalary() >= x) {
@@ -305,13 +310,13 @@ int leftMostXInRange(Employee* arr, int left, int right, int x) {
 	return -1;
 }
 
-int rightMostXInRange(Employee* arr, int n, int left, int right, int x) {
+int rightMostXInRange(vector<Employee>& arr, int n, int left, int right, int x) {
 	if (left <= right) {
 		int mid = left + (right - left) / 2;
 		if ((mid == n - 1 || arr[mid + 1].getSalary() > x) && arr[mid].getSalary() <= x) {
 			return mid;
 		}
-		if (arr[mid].getSalary() < x) { // tìm phía bên phải
+		if (arr[mid].getSalary() <= x) { // tìm phía bên phải
 			return rightMostXInRange(arr, n, mid + 1, right, x);
 		}
 		else { // tìm phía trái
@@ -321,7 +326,7 @@ int rightMostXInRange(Employee* arr, int n, int left, int right, int x) {
 	return -1;
 }
 
-void findBySalaryInRange(Employee* arr, int n, int x, int y, vector<Employee>& v) {
+void findBySalaryInRange(vector<Employee>& arr, int n, int x, int y, vector<Employee>& v) {
 	int counter = 0;
 	// tìm vị trí trái cùng xuất hiện x
 	int startPos = leftMostXInRange(arr, 0, n - 1, x);
@@ -342,37 +347,38 @@ int main() {
 	if (ifs) {
 		ifs >> t; // đọc số bộ test
 		ifs.ignore();
-		Employee* arr = new Employee[t];
+		vector<Employee> arr;
 		for (int i = 0; i < t; i++) {
 			string str;
 			getline(ifs, str);
-			createEmployee(str, arr[i]);
+			Employee e;
+			createEmployee(str, e);
+			arr.push_back(e);
 		}
 		ifs.close();
 		int choice = 0;
 		do
 		{
-			cout << "================= OPTIONS =================\n";
+			cout << "===================== OPTIONS =====================\n";
 			cout << "1. Tim nhan vien theo ma NV.\n";
 			cout << "2. Tim nhan vien theo ten gan dung.\n";
 			cout << "3. Tim nhan vien co muc luong x.\n";
 			cout << "4. Tim nhan vien co muc luong trong doan [x, y].\n";
-			cout << "5. Sap xep danh sach nhan vien theo luong.\n";
-			cout << "6. Hien thi danh sach nhan vien hien co.\n";
+			cout << "5. Hien thi danh sach nhan vien hien co.\n";
 			cout << "0. Thoat chuong trinh.\n";
 			cout << "Lua chon cua ban? ";
 			cin >> choice;
 			switch (choice)
 			{
 			case 0:
-				cout << "<=== CAM ON QUY KHACH ===>\n";
+				cout << "<=== CHUONG TRINH DA KET THUC ===>\n";
 				break;
 			case 1:
 			{
 				string id;
 				cout << "Nhap ma nhan vien: ";
 				cin >> id;
-				mergeSort(arr, 0, t - 1, compareId);
+				sort(arr.begin(), arr.end(), compareId);
 				int index = findById(arr, 0, t - 1, id);
 				if (index != -1) {
 					cout << "=== TIM THAY ===\n";
@@ -386,7 +392,6 @@ int main() {
 			break;
 			case 2:
 			{
-				mergeSort(arr, 0, t - 1, compareName);
 				string key;
 				cout << "Nhap ten can tim: ";
 				cin >> key;
@@ -405,7 +410,6 @@ int main() {
 			break;
 			case 3:
 			{
-				mergeSort(arr, 0, t - 1, compareSalary);
 				int x;
 				cout << "Nhap muc luong: ";
 				cin >> x;
@@ -424,7 +428,6 @@ int main() {
 			break;
 			case 4:
 			{
-				mergeSort(arr, 0, t - 1, compareSalary);
 				int x, y;
 				cout << "Nhap muc luong toi thieu: ";
 				cin >> x;
@@ -442,20 +445,18 @@ int main() {
 					}
 				}
 			}
-			break;
-			case 5:
-				mergeSort(arr, 0, t - 1, compareTotal);
 				break;
+			case 5:
+				sort(arr.begin(), arr.end(), compareTotal);
 			case 6:
 				cout << "====== Danh sach nhan vien ======\n";
-				showElements(arr, t);
+				showElements(arr);
 				break;
 			default:
 				cout << "Sai lua chon. Vui long chon lai!\n";
 				break;
 			}
 		} while (choice != 0);
-		delete[] arr; // thu hồi bộ nhớ cấp phát động
 	}
 	else {
 		cout << "<== Khong mo duoc file. Vui long kiem tra lai! ==>\n";
