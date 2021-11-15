@@ -292,7 +292,7 @@ void findBySalary(Employee* arr, int n, int x, vector<Employee>& v) {
 int leftMostXInRange(Employee* arr, int left, int right, int x) {
 	if (left <= right) {
 		int mid = left + (right - left) / 2;
-		if ((mid == 0 || arr[mid - 1].getSalary() < x) && arr[mid].getSalary() == x) {
+		if ((mid == 0 || (arr[mid - 1].getSalary() < x)) && arr[mid].getSalary() >= x) {
 			return mid;
 		}
 		if (arr[mid].getSalary() <= x) { // tìm phía bên phải
@@ -308,7 +308,7 @@ int leftMostXInRange(Employee* arr, int left, int right, int x) {
 int rightMostXInRange(Employee* arr, int n, int left, int right, int x) {
 	if (left <= right) {
 		int mid = left + (right - left) / 2;
-		if ((mid == n - 1 || arr[mid + 1].getSalary() > x) && arr[mid].getSalary() == x) {
+		if ((mid == n - 1 || arr[mid + 1].getSalary() > x) && arr[mid].getSalary() <= x) {
 			return mid;
 		}
 		if (arr[mid].getSalary() <= x) { // tìm phía bên phải
