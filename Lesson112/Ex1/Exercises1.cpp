@@ -1,4 +1,9 @@
-﻿#include <iostream>
+﻿/**
+*	@author:	Branium Academy
+*	@version:	2021.11
+*	@see:		https://braniumacademy.net
+*/
+#include <iostream>
 #include <stack>
 #include <string>
 #include <fstream>
