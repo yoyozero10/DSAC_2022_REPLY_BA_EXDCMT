@@ -5,40 +5,81 @@
  */
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <string>
 using namespace std;
-
-/**
- * Phương thức chuyển đổi chuỗi nhị phân sang giá trị số ở hệ 10
- *
- * @param arr mảng chứa chuỗi nhị phân
- * @return giá trị số tính được từ chuỗi nhị phân cho trước ở hệ 10
- */
-int convertBinaryToDecimal(int* arr, int n) {
-    int number = 0;
-    for (int i = 0; i < n; i++) {
-        number += arr[i] * (int)pow(2, n - 1 - i);
-    }
-    return number;
-}
+// khai báo hàm nguyên mẫu
+void output(string* names, int* arr, int n);
+bool nextPermutation(int* arr, int n);
+void generatePermutation(string* names, int n);
 
 int main() {
-    int t;
-    cin >> t;
-    cin.ignore();
-    int count = 1;
-    while (t-- > 0) {
-        string testCase;
-        getline(cin, testCase);
-        stringstream ss(testCase);
-        int n = 0;
-        int arr[100];
-        int x;
-        while (ss >> x) {
-            arr[n++] = x;
-        }
-        int result = convertBinaryToDecimal(arr, n);
-        cout << result << endl;
-    }
-	return 0;
+	int t;
+	ifstream ifs("CONTEST.INP");
+	ifs >> t;
+	ifs.ignore();
+	int count = 1;
+	while (t-- > 0) {
+		int n = 0;
+		string testCase;
+		getline(ifs, testCase);
+		stringstream ss(testCase);
+		string names[100];
+		string str;
+		while (ss >> str) {
+			names[n++] = str;
+		}
+		cout << "Test " << count++ << ": \n";
+		generatePermutation(names, n); // sinh các cấu hình kế tiếp
+	}
+}
+
+// sinh hoán vị kế tiếp
+bool nextPermutation(int* arr, int n) {
+	int i = n - 2;
+	while (i >= 0 && arr[i] > arr[i + 1]) {
+		i--;
+	}
+	if (i >= 0) {
+		int k = n - 1;
+		while (arr[i] > arr[k]) {
+			k--;
+		}
+		int tmp = arr[i];
+		arr[i] = arr[k];
+		arr[k] = tmp;
+		int r = i + 1;
+		int s = n - 1;
+		while (r < s) {
+			int t = arr[r];
+			arr[r] = arr[s];
+			arr[s] = t;
+			r++;
+			s--;
+		}
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+// thuật toán sinh hoán vị chính tắc
+void generatePermutation(string* names, int n) {
+	int* arr = new int[n];
+	for (int i = 0; i < n; i++) {
+		arr[i] = i + 1;
+	}
+	bool isFinalConfig = false;
+	while (!isFinalConfig) {
+		output(names, arr, n);
+		isFinalConfig = nextPermutation(arr, n);
+	}
+}
+
+void output(string* names, int* arr, int n) { // hiển thị kết quả
+	for (int i = 0; i < n; i++) {
+		cout << names[arr[i] - 1] << ' ';
+	}
+	cout << endl;
 }

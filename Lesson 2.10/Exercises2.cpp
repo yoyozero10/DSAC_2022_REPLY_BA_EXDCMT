@@ -4,34 +4,68 @@
  * @see <a href="https://braniumacademy.net/">...</a>
  */
 #include <iostream>
+#include <iomanip>
 using namespace std;
-
+// khai báo hàm nguyên mẫu
 void output(int* arr, int n);
-void generate(int* arr, int n);
-bool nextBinaryString(int* arr, int n);
+bool nextPermutation(int* arr, int n);
+void generatePermutation(int* arr, int n);
 
-void generate(int* arr, int n) { // thuật toán sinh tất cả các xâu
-    bool isFinal = nextBinaryString(arr, n);
-    if (!isFinal) { // nếu đây chưa phải là cấu hình cuối cùng
-        output(arr, n); // hiển thị cấu hình kế tiếp
-    }
-    else { // nếu đây là cấu hình cuối
-        cout << "UNAVAILABLE\n";
+int main() {
+    int t;
+    cin >> t;
+    int count = 1;
+    while (t-- > 0) {
+        int n;
+        cin >> n;
+        int* arr = new int[n]();
+        for (int i = 0; i < n; i++) { // đọc các phần tử từ mảng cho trước
+            cin >> arr[i];
+        }
+        cout << "Test " << count++ << ": \n";
+        generatePermutation(arr, n);
+        delete[] arr;
     }
 }
 
-bool nextBinaryString(int* arr, int n) { // thuật toán sinh xâu kế tiếp
-    int i = n - 1;
-    while (i >= 0 && arr[i] != 0) {
-        arr[i] = 0;
+// sinh hoán vị kế tiếp
+bool nextPermutation(int* arr, int n) {
+    int i = n - 2;
+    while (i >= 0 && arr[i] > arr[i + 1]) {
         i--;
     }
     if (i >= 0) {
-        arr[i] = 1;
+        int k = n - 1;
+        while (arr[i] > arr[k]) {
+            k--;
+        }
+        int tmp = arr[i];
+        arr[i] = arr[k];
+        arr[k] = tmp;
+        int r = i + 1;
+        int s = n - 1;
+        while (r < s) {
+            int t = arr[r];
+            arr[r] = arr[s];
+            arr[s] = t;
+            r++;
+            s--;
+        }
         return false;
     }
     else {
         return true;
+    }
+}
+
+// thuật toán sinh hoán vị chính tắc
+void generatePermutation(int* arr, int n) {
+    bool isFinalConfig = nextPermutation(arr, n);
+    if (!isFinalConfig) {
+        output(arr, n);
+    }
+    else {
+        cout << "UNAVAILABLE\n";
     }
 }
 
@@ -40,21 +74,4 @@ void output(int* arr, int n) { // hiển thị kết quả
         cout << arr[i] << ' ';
     }
     cout << endl;
-}
-
-int main() {
-    int t;
-    cin >> t;
-    int count = 1;
-    while (t-- > 0) {
-        int n;
-        cin >> n; // đọc n
-        int* arr = new int[n](); // tạo mảng với các giá trị mặc định
-        for (int i = 0; i < n; i++) { // đọc các phần tử của cấu hình cho trước
-            cin >> arr[i];
-        }
-        cout << "Test " << count++ << ": ";
-        generate(arr, n);
-    }
-	return 0;
 }

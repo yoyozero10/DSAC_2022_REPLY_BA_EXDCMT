@@ -4,54 +4,74 @@
  * @see <a href="https://braniumacademy.net/">...</a>
  */
 #include <iostream>
+#include <iomanip>
 using namespace std;
+// khai báo hàm nguyên mẫu
+void output(int* arr, int n);
+bool nextPermutation(int* arr, int n);
+void generatePermutation(int* arr, int n);
 
-// khai báo nguyên mẫu hàm
-void generate(int* arr, int n); 
-bool nextBinaryString(int* arr, int n); 
-void output(int* arr, int n); 
-
-void generate(int* arr, int n) { // thuật toán sinh tất cả các xâu
-	bool isFinal = false;
-	while (!isFinal) {
-		output(arr, n);
-		isFinal = nextBinaryString(arr, n);
-	}
+int main() {
+    int t;
+    cin >> t;
+    int count = 1;
+    while (t-- > 0) {
+        int n;
+        cin >> n;
+        cout << "Test " << count++ << ": \n";
+        int* arr = new int[n]();
+        // khơi tạo
+        for (int i = 0; i < n; i++) {
+            arr[i] = i + 1;
+        }
+        generatePermutation(arr, n);
+        delete[] arr;
+    }
+	return 0;
 }
 
-bool nextBinaryString(int* arr, int n) { // thuật toán sinh xâu kế tiếp
-	int i = n - 1;
-	while (i >= 0 && arr[i] != 0) {
-		arr[i] = 0;
-		i--;
-	}
-	if (i >= 0) {
-		arr[i] = 1;
-		return false;
-	}
-	else {
-		return true;
-	}
+// sinh hoán vị kế tiếp
+bool nextPermutation(int* arr, int n) {
+    int i = n - 2;
+    while (i >= 0 && arr[i] > arr[i + 1]) {
+        i--;
+    }
+    if (i >= 0) {
+        int k = n - 1;
+        while (arr[i] > arr[k]) {
+            k--;
+        }
+        int tmp = arr[i];
+        arr[i] = arr[k];
+        arr[k] = tmp;
+        int r = i + 1;
+        int s = n - 1;
+        while (r < s) {
+            int t = arr[r];
+            arr[r] = arr[s];
+            arr[s] = t;
+            r++;
+            s--;
+        }
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+// thuật toán sinh hoán vị chính tắc
+void generatePermutation(int* arr, int n) {
+    bool isFinalConfig = false;
+    while (!isFinalConfig) {
+        output(arr, n);
+        isFinalConfig = nextPermutation(arr, n);
+    }
 }
 
 void output(int* arr, int n) { // hiển thị kết quả
-	for (int i = 0; i < n; i++) {
-		cout << arr[i] << ' ';
-	}
-	cout << endl;
-}
-
-int main()
-{
-	int t;
-	int count = 1;
-	cin >> t;
-	while (t-- > 0) {
-		int n;
-		cin >> n;
-		cout << "Test " << count++ << ": \n";
-		int* arr = new int[n]();
-		generate(arr, n);
-		delete[] arr;
-	}
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << ' ';
+    }
+    cout << endl;
 }
