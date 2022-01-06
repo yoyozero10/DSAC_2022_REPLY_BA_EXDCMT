@@ -12,7 +12,7 @@ class Pair {
     string key;
     string value;
 
-    public:
+public:
     Pair(string key, string value) {
         this->key = key;
         this->value = value;
@@ -39,8 +39,8 @@ class Pair {
     }
 };
 
-ostream& operator << (ostream& os, const Pair& const pair) {
-    os << "[" << pair.key << " - " << pair.value << "]";
+ostream& operator << (ostream& os, const Pair& p) {
+    os << "[" << p.key << " - " << p.value << "]";
     return os;
 }
 
@@ -134,7 +134,7 @@ template<class T> void search(const vector<T>& v) {
     Pair p(key, "");
     int index = findX(v, p);
     if (index != -1) {
-        cout << v[index];
+        cout << v[index] << endl;
     }
     else {
         cout << "Khong ton tai tu can tim.\n";
