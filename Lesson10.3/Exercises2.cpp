@@ -1,32 +1,21 @@
 ﻿/**
 *	@author:	Branium Academy
-*	@version:	2021.11
+*	@version:	2022.04.17
 *	@see:		https://braniumacademy.net
 */
 
 #include <iostream>
 using namespace std;
 
-int countX(string* arr, int n, string x);
-int leftMostX(string* arr, int left, int right, string x);
-int rightMostX(string* arr, int n, int left, int right, string x);
+template<class T> int countX(T* arr, int n, T x);
+template<class T> int leftMostX(T* arr, int left, int right, T x);
+template<class T> int rightMostX(T* arr, int n, int left, int right, T x);
 
 template<class T> void readData(T* arr, int size) {
 	for (int i = 0; i < size; i++)
 	{
 		cin >> arr[i];
 	}
-}
-
-template<class T> int countX(T* arr, int size, T x) {
-	int counter = 0;
-	for (int i = 0; i < size; i++)
-	{
-		if (arr[i] == x) {
-			counter++;
-		}
-	}
-	return counter;
 }
 
 // thuật toán trộn
@@ -87,7 +76,7 @@ int main() {
 	return 0;
 }
 
-int countX(string* arr, int n, string x) {
+template<class T> int countX(T* arr, int n, T x) {
 	int counter = 0;
 	// tìm vị trí trái cùng xuất hiện x
 	int startPos = leftMostX(arr, 0, n - 1, x);
@@ -99,7 +88,7 @@ int countX(string* arr, int n, string x) {
 	return endPos - startPos + 1;
 }
 
-int leftMostX(string* arr, int left, int right, string x) {
+template<class T> int leftMostX(T* arr, int left, int right, T x) {
 	if (left <= right) {
 		int mid = left + (right - left) / 2;
 		if ((mid == 0 || arr[mid - 1] < x) && arr[mid] == x) {
@@ -115,7 +104,7 @@ int leftMostX(string* arr, int left, int right, string x) {
 	return -1;
 }
 
-int rightMostX(string* arr, int n, int left, int right, string x) {
+template<class T> int rightMostX(T* arr, int n, int left, int right, T x) {
 	if (left <= right) {
 		int mid = left + (right - left) / 2;
 		if ((mid == n - 1 || arr[mid + 1] > x) && arr[mid] == x) {
