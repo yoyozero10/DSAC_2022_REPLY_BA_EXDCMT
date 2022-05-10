@@ -13,19 +13,19 @@ bool solveKnightTour(int x, int y, int moveStep, int sol[N][N], int xMove[N], in
 bool isSafe(int x, int y, int sol[N][N]);
 
 int main() {
-    int sol[N][N]; // m?ng l?u c�c v? tr� tr�n b�n c?
-        // kh?i t?o gi� tr? m?c ??nh cho m?ng
+    int sol[N][N]; // mảng lưu các vi trí trên bàn cờ
+        // khởi tạo giá trị mặc định cho mảng
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             sol[i][j] = -1;
         }
     }
-    // c�c c?p t?a ?? m� qu�n m� c� th? di chuy?n t? v? tr� hi?n t?i.
+    // các cặp tọa độ mà quân mã có thể di chuyển từ vị trí hiện tại.
     int xMove[] = {2, 1, -1, 2, -2, 1, -1, -2};
     int yMove[] = {1, -2, 2, -1, -1, 2, -2, 1};
-    // gi? s? qu�n m� b?t ??u t? � ??u ti�n t?a ?? (0, 0)
+    // giả sử quân mã bắt đầu từ ô đầu tiên tọa độ (0, 0)
     sol[0][0] = 0;
-    // t�m l?i gi?i:
+    // tìm lời giải:
     bool isSolved = solveKnightTour(0, 0, 1, sol, xMove, yMove);
     if (!isSolved) {
         cout << "Khong tim duoc loi giai.\n";
@@ -36,17 +36,17 @@ int main() {
 }
 
 /**
-     * Ph??ng th?c t�m l?i gi?i cho b�i to�n. T?i v? tr� (x, y) n?u ??t qu�n m� d?n t?i l?i gi?i s? ?�nh d?u
-     * v? tr� ?� v?i gi� tr? g l� b??c ?i k? ti?p ?? ti?n ??n k?t qu? cu?i c�ng. Sau khi th?c hi?n m?i b??c
-     * ?i c?a qu�n m� s? ???c ghi l?i trong ma tr?n ch?a l?i gi?i sau c�ng.
+     * Phương thức tìm lời giải cho bài toán. Tại vị trí (x, y) nếu đặt quân mã dẫn tới lời giải sẽ đánh dấu
+     * vị trí đó với giá trị g là bước đi kế tiếp để tiến đến kết quả cuối cùng. Sau khi thực hiện mọi bước
+     * đi của quân mã sẽ được ghi lại trong ma trận chứa lời giải sau cùng.
      *
-     * @param x        t?a ?? x c?a � ?ang xem x�t ??t qu�n m�
-     * @param y        t?a ?? y c?a � ?ang xem x�t ??t qu�n m�
-     * @param moveStep b??c ?i ti?p theo c?a qu�n m�
-     * @param sol      ma tr?n k?t qu?
-     * @param xMove    c�c t?a ?? x m� qu�n m� c� th? di chuy?n t?i t? v? tr� hi?n th?i
-     * @param yMove    c�c t?a ?? y m� qu�n m� c� th? di chuy?n t?i t? v? tr� hi?n th?i
-     * @return true n?u t�m ???c 1 l?i gi?i v� false n?u kh�ng t�m ???c l?i gi?i
+     * @param x        tọa độ x của ô đang xem xét đặt quân mã
+     * @param y        tọa độ y của ô đang xem xét đặt quân mã
+     * @param moveStep bước đi tiếp theo của quân mã
+     * @param sol      ma trận kết quả
+     * @param xMove    các tọa độ x mà quân mã có thể di chuyển tới từ vị trí hiện thời
+     * @param yMove    các tọa độ y mà quân mã có thể di chuyển tới từ vị trí hiện thời
+     * @return true nếu tìm được 1 lời giải và false nếu không tìm được lời giải
      */
 bool solveKnightTour(int x, int y, int moveStep, int sol[N][N], int xMove[N], int yMove[N]) {
     int nextX;
@@ -71,21 +71,21 @@ bool solveKnightTour(int x, int y, int moveStep, int sol[N][N], int xMove[N], in
 }
 
 /**
- * Ph??ng th?c ki?m tra vi?c ??t qu�n m� ? v? tr� x, y c� th?a m�n hay kh�ng
+ * Phương thức kiểm tra việc đặt quân mã ở vị trí x, y có thỏa mãn hay không
  *
- * @param x   t?a ?? v? tr� x t?i ?� c?n ??t qu�n m�
- * @param y   t?a ?? v? tr� y t?i ?� c?n ??t qu�n m�
- * @param sol ma tr?n l?u k?t qu?
- * @return true n?u qu�n m� c� th? ??t ???c t?i v? tr� (x, y) trong ma tr?n sol
+ * @param x   tọa độ vị trí x tại đó cần đặt quân mã
+ * @param y   tọa độ vị trí y tại đó cần đặt quân mã
+ * @param sol ma trận l?u kết quả
+ * @return true nếu quân mã có thể đặt được tại vị trí (x, y) trong ma trận sol
  */
 bool isSafe(int x, int y, int sol[N][N]) {
     return (x >= 0 && x < N&& y >= 0 && y < N&& sol[x][y] == -1);
 }
 
 /**
- * Ph??ng th?c hi?n th? k?t qu?
+ * Phương thức hiển thị kết quả
  *
- * @param sol ma tr?n k?t qu?
+ * @param sol ma trận kết quả
  */
 void showResult(int sol[N][N]) {
     for (int i = 0; i < N; i++) {
