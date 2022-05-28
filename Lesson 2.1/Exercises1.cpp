@@ -1,3 +1,9 @@
+/**
+* @author Branium Academy
+* @version 2022.05.28
+* @see https://braniumacademy.net
+*/
+
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -45,12 +51,12 @@ void withdraw(BankAccount* acc) {
     cout << "Nhap so tien muon rut: ";
     long amount;
     cin >> amount;
-    if (amount > 0) {
+    if (amount > 0 && amount < acc->ballance) {
         acc->ballance -= amount;
         cout << "<== Rut tien thanh cong! ==>\n";
     }
     else {
-        cout << "<== So tien can nap khong hop le ==>\n";
+        cout << "<== So tien can rut khong hop le ==>\n";
     }
 }
 
