@@ -120,10 +120,11 @@ void infixToPostfix(string input) {
 			else {
 				int number = 0;
 				int c = input[i] - 48;
-				while (c >= 0 && c <= 9) {
+				while (c >= 0 && c <= 9 && i < size) {
 					i++;
 					number = number * 10 + c;
-					c = input[i] - 48;
+					if(i < size)
+						c = input[i] - 48;
 				}
 				i--;
 				cout << number << " ";
