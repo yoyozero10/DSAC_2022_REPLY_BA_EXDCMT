@@ -111,10 +111,11 @@ double executePostfix(string str) {
 		else { // trường hợp còn lại, kí tự tại vị trí i là toán hạng
 			double number = 0;
 			char c = str[i] - '0';
-			while (c >= 0 && c <= 9) {
+			while (c >= 0 && c <= 9 && i < (int)str.length()) {
 				number = number * 10 + c;
 				i++;
-				c = str[i] - '0';
+				if(i < (int)str.length())
+					c = str[i] - '0';
 			}
 			i--;
 			stack.push(number);
