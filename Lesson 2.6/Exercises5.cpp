@@ -1,71 +1,55 @@
 ﻿/**
+ * @file Exercises4.cpp
  * @author Branium Academy
- * @website braniumacademy.net
- * @version 2021.10
+ * @see https://braniumacademy.net
+ * @brief Update exercises 4 lesson 2.6
+ * @version 2.0
+ * @date 2022-10-31
+ *
+ * @copyright Copyright (c) Branium Academy 2022
  *
  */
+
+// giải pháp:
+// từ phần tử đầu, gọi đệ quy tới tất cả các phần tử có thể đi tới từ phần tử đầu tiên.
+// Số lượng tối thiểu các bước nhảy từ đầu tới cuối mảng có thể được tính toán sử dụng giá trị tối thiểu
+// từ các lời gọi đệ quy.
+// tức là: minJump(start, end) = min(minJump(k, end)) với mọi k có thể tới được từ đầu mảng.
+
 #include <iostream>
 using namespace std;
 
-/**
- * 1. Cấu trúc con tối ưu: để đi đến tọa độ (m, n), đường đi sẽ phải qua một trong các ô
- * tọa độ (m-1, n-1), (m-1, n), (m, n-1). Do đó chi phí nhỏ nhất để đi đến (m, n) là chi
- * phí nhỏ nhất trong 3 ô trên cộng thêm chi phí tại ô (m, n).
- * 2. Vấn đề chồng lấn nhau của các bài toán con: việc tìm chi phí nhỏ nhất để đi đến ô
- * tọa độ (i, j) lặp đi lặp lại đến khi ta đến đích.
- */
- // chiến lược bottom-up
-int findMinCost(int** cost, int m, int n) {
-    int** result = new int* [m + 1]; // mảng lưu chi phí đi đến từng ô (i, j) với i <=m và j <= n
-    for (int i = 0; i < m + 1; i++)
-    {
-        result[i] = new int[n + 1];
-    }
-    // gán giá trị cho phần tử đầu tiên trong result:
-    result[0][0] = cost[0][0];
-    // cập nhật hàng đầu tiên trong result:
-    for (int i = 1; i <= n; i++) {
-        result[0][i] = result[0][i - 1] + cost[0][i];
-    }
-    // cập nhật cột đầu tiên trong result:
-    for (int i = 1; i <= m; i++) {
-        result[i][0] = result[i - 1][0] + cost[i][0];
-    }
-    // cập nhật các phần tử ở các hàng khác:
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            result[i][j] = min(result[i - 1][j],
-                min(result[i][j - 1], result[i - 1][j - 1])) + cost[i][j];
-        }
-    }
-    return result[m][n];
+// tìm giá trị nhỏ nhất trong hai số
+int min(int a, int b) {
+	if (a < b) {
+		return a;
+	}
+	return b;
 }
 
-int main()
-{
-    int row, col;
-    cout << "Nhap so hang, cot: ";
-    cin >> row >> col;
-    int** cost = new int* [row];
-    for (int i = 0; i < row; i++)
-    {
-        cost[i] = new int[col];
-    }
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            cout << "Nhap gia tri tai vi tri [" << i << "][" << j << "]: ";
-            cin >> cost[i][j];
-        }
-    }
-    cout << "Nhap toa do dich(x, y): ";
-    int x, y;
-    cin >> x >> y;
-    int minCost = findMinCost(cost, x, y);
-    cout << "Chi phi nho nhat: " << minCost << endl;
-    // thu hồi bộ nhớ
-    for (int i = 0; i < row; i++)
-    {
-        delete[] cost[i];
-    }
-    delete[] cost;
+// tìm số bước nhảy nhỏ nhất có thể
+int minJump(int* arr, int n) {
+	int* jumps = new int[n]();
+	const int MAX_INT = 2100000000;
+	if (n == 0 || arr[0] == 0) {
+		return MAX_INT;
+	}
+	jumps[0] = 0;
+	for (int i = 1; i < n; i++) {
+		jumps[i] = MAX_INT;
+		for (int j = 0; j < i; j++) {
+			if (i <= j + arr[j] && jumps[j] != MAX_INT) {
+				jumps[i] = min(jumps[i], jumps[j] + 1);
+				break;
+			}
+		}
+	}
+	return jumps[n - 1];
+}
+
+int main() {
+	int arr[] = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 };
+	int size = sizeof(arr) / sizeof(int);
+	cout << "So lan nhay toi thieu: " << minJump(arr, size);
+	cout << endl;
 }
