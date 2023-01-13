@@ -33,8 +33,8 @@ int knapSack(int W, int* weight, int* value, int n) {
 
 int main()
 {
-    int* val = new int[] { 60, 100, 120, 200 };
-    int* weight = new int[] { 10, 20, 30, 20 };
+    int* val = new int[4] { 60, 100, 120, 200 };
+    int* weight = new int[4] { 10, 20, 30, 20 };
     int W = 50;
     int n = 4;
     cout << "Gia tri toi uu: " << knapSack(W, weight, val, n) << endl;
