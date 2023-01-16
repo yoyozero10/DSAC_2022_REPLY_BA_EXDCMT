@@ -10,20 +10,20 @@
  *
  *
  --> Ý tưởng:
-	Gọi LIS: chuỗi con tăng dài nhất
+	Gọi LIS: độ dài chuỗi con tăng dài nhất
 	Xét mảng arr[] = { 3, 10, 2, 11 }
-	Gọi f(i) là hàm tính toán và trả về LIS của mảng con kết thúc tại vị trí 'i'
-	Giả định i tăng từ 1
+	Gọi f(i) là hàm tính toán và trả về LIS của mảng con kết thúc tại chỉ số 'i'
+	Giả định i tăng từ 0
 
-	(LIS(1) = 1)
+	(LIS(0) = 1)
 
-	    f(4)        với { f(4) = 1 + max(f(1), f(2), f(3)) }
+	    f(3)        với { f(3) = 1 + max(f(0), f(1), f(2)) }
 	/    |    \
-	f(1) f(2)  f(3) với { f(3) = 1, f(2) và f(1) cùng lớn hơn f(3) }
+	f(0) f(1)  f(2) với { f(2) = 1, f(1) và f(0) cùng lớn hơn f(2) }
 	|     |  \
-	f(1) f(2) f(1)  với { f(2) = 1 + max(f(1) }
+	f(0) f(1) f(0)  với { f(1) = 1 + max(f(0) }
 	|
-	f(1)            với { f(1) = 1 }
+	f(0)            với { f(0) = 1 }
 */
 
 #include <iostream>
